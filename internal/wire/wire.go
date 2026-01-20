@@ -28,7 +28,6 @@ func Wiring(repo *repository.Repository, log *zap.Logger, config utils.Configura
 	// metrics := &utils.Metrics{}
 	// wg := &sync.WaitGroup{}
 
-
 	// wireOrder(r, repo, emailJobs)
 
 	usecase := usecase.NewUsecase(*repo)
@@ -49,13 +48,21 @@ func Apiv1(adaptor *adaptor.Adaptor, mw mCostume.MiddlewareCostume) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
 	// r.Use(mw.Logging)
-	// CRUD Category
+
+	// auth user
 	r.Route("/auth", func(r chi.Router) {
 		r.Post("/register", adaptor.UserAdaptor.Register)
 		r.Post("/login", adaptor.UserAdaptor.Login)
 		r.Post("/logout", adaptor.UserAdaptor.Logout)
 	})
 
+	// get cinema
+	r.Route("/cinemas", func(r chi.Router) {
+		r.Get("/", adaptor.CinemaAdaptor.GetListCinemas)
+		r.Route("/{cinemaId}", func(r chi.Router) {
+			r.Get("/", adaptor.CinemaAdaptor.GetListCinemaById)
+		})
+	})
+
 	return r
 }
-

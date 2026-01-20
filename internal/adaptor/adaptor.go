@@ -6,11 +6,13 @@ import (
 )
 
 type Adaptor struct {
-	UserAdaptor UserAdaptor
+	UserAdaptor   UserAdaptor
+	CinemaAdaptor CinemaAdaptor
 }
 
 func NewAdaptor(usecase usecase.Usecase, config utils.Configuration) Adaptor {
 	return Adaptor{
-		UserAdaptor: NewUserAdaptor(usecase.UserUsecase, config),
+		UserAdaptor:   NewUserAdaptor(usecase.UserUsecase, config),
+		CinemaAdaptor: NewCinemaAdaptor(usecase.CinemaUsecase, config),
 	}
 }
