@@ -8,11 +8,13 @@ import (
 type Adaptor struct {
 	UserAdaptor   UserAdaptor
 	CinemaAdaptor CinemaAdaptor
+	SeatAdaptor   SeatAdaptor
 }
 
 func NewAdaptor(usecase usecase.Usecase, config utils.Configuration) Adaptor {
 	return Adaptor{
 		UserAdaptor:   NewUserAdaptor(usecase.UserUsecase, config),
 		CinemaAdaptor: NewCinemaAdaptor(usecase.CinemaUsecase, config),
+		SeatAdaptor:   NewSeatAdaptor(usecase.SeatUsecase, config),
 	}
 }

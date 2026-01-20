@@ -64,5 +64,8 @@ func Apiv1(adaptor *adaptor.Adaptor, mw mCostume.MiddlewareCostume) *chi.Mux {
 		})
 	})
 
+	// get seat status
+	r.Get("/cinemas/{cinemaId}/seats", adaptor.SeatAdaptor.GetStatusSeat)
+
 	return r
 }
