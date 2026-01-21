@@ -16,7 +16,7 @@ type Repository struct {
 func NewRepository(db *pgxpool.Pool, log *zap.Logger) Repository {
 	return Repository{
 		UserRepo:    NewUserRepository(db),
-		CinemaRepo:  NewCinemaRepository(db),
+		CinemaRepo:  NewCinemaRepository(db, log),
 		SeatRepo:    NewSeatRepository(db),
 		PaymentRepo: NewPaymentRepository(db),
 		// ProductRepo:   NewProductRepository(db, log),

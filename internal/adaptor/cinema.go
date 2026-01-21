@@ -23,14 +23,23 @@ func NewCinemaAdaptor(cinemaUsecase usecase.CinemaUsecase, config utils.Configur
 
 // get list cinemas
 func (adaptor *CinemaAdaptor) GetListCinemas(w http.ResponseWriter, r *http.Request) {
+	page, err := strconv.Atoi(r.URL.Query().Get("page"))
+	if err != nil {
+		utils.ResponseBadRequest(w, http.StatusBadRequest, "Invalid page", nil)
+		return
+	}
+
+	// limit pagination
+	limit, err := strconv.Atoi(r.URL.Query().Get("limit"))
+
 	// get data cinemas from service all cinemas
-	cinemas, err := adaptor.CinemaUsecase.GetListCinemas()
+	cinemas, pagination, err := adaptor.CinemaUsecase.GetListCinemas(page, limit)
 	if err != nil {
 		utils.ResponseBadRequest(w, http.StatusInternalServerError, "Failed to fetch cinemas: "+err.Error(), nil)
 		return
 	}
 
-	utils.ResponseSuccess(w, http.StatusOK, "success get data cinema", cinemas)
+	utils.ResponsePagination(w, http.StatusOK, "success get data cinema", cinemas, *pagination)
 }
 
 // get list cinema by id

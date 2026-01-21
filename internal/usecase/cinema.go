@@ -3,10 +3,11 @@ package usecase
 import (
 	"project-app-bioskop-golang-fathoni/internal/data/repository"
 	"project-app-bioskop-golang-fathoni/internal/dto"
+	"project-app-bioskop-golang-fathoni/pkg/utils"
 )
 
 type CinemaUsecase interface {
-	GetListCinemas() ([]dto.CinemaResponse, error)
+	GetListCinemas(page, limit int) (*[]dto.CinemaResponse, *dto.Pagination, error)
 	GetListCinemaById(film_id int) (dto.CinemaDetailResponse, error)
 }
 
@@ -19,8 +20,21 @@ func NewCinemaUsecase(repo repository.Repository) CinemaUsecase {
 }
 
 // usecase get all cinemas
-func (uc *cinemaUsecase) GetListCinemas() ([]dto.CinemaResponse, error) {
-	return uc.Repo.CinemaRepo.GetListCinemas()
+func (uc *cinemaUsecase) GetListCinemas(page, limit int) (*[]dto.CinemaResponse, *dto.Pagination, error) {
+	cinemas, total, err := uc.Repo.CinemaRepo.GetListCinemas(page, limit)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	pagination := dto.Pagination{
+		CurrentPage: page,
+		Limit: limit,
+		TotalPages: utils.TotalPage(limit, int64(total)),
+		TotalRecords: total,
+	}
+
+	return &cinemas, &pagination, nil
 } 
 
 // usecase get detail cinema

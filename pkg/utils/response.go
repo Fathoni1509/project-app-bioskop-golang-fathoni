@@ -3,7 +3,7 @@ package utils
 import (
 	"encoding/json"
 	"net/http"
-	
+	"project-app-bioskop-golang-fathoni/internal/dto"
 )
 
 type Reponse struct {
@@ -35,14 +35,14 @@ func ResponseBadRequest(w http.ResponseWriter, code int, message string, errors 
 	json.NewEncoder(w).Encode(response)
 }
 
-// func ResponsePagination(w http.ResponseWriter, code int, message string, data any, pagination dto.Pagination) {
-// 	response := map[string]interface{}{
-// 		"status":     true,
-// 		"message":    message,
-// 		"data":       data,
-// 		"pagination": pagination,
-// 	}
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.WriteHeader(code)
-// 	json.NewEncoder(w).Encode(response)
-// }
+func ResponsePagination(w http.ResponseWriter, code int, message string, data any, pagination dto.Pagination) {
+	response := map[string]interface{}{
+		"status":     true,
+		"message":    message,
+		"data":       data,
+		"pagination": pagination,
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
+	json.NewEncoder(w).Encode(response)
+}
