@@ -12,6 +12,7 @@ type Adaptor struct {
 	PaymentAdaptor        PaymentAdaptor
 	BookingAdaptor        BookingAdaptor
 	BookingHistoryAdaptor BookingHistoryAdaptor
+	PayAdaptor            PayAdaptor
 }
 
 func NewAdaptor(usecase usecase.Usecase, config utils.Configuration) Adaptor {
@@ -22,5 +23,6 @@ func NewAdaptor(usecase usecase.Usecase, config utils.Configuration) Adaptor {
 		PaymentAdaptor:        NewPaymentAdaptor(usecase.PaymentUsecase, config),
 		BookingAdaptor:        NewBookingAdaptor(usecase.BookingUsecase, config),
 		BookingHistoryAdaptor: NewBookingHistoryAdaptor(usecase.BookingHistoryUsecase, config),
+		PayAdaptor:            NewPayAdaptor(usecase.PayUsecase, config),
 	}
 }
