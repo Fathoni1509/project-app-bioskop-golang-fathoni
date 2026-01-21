@@ -33,7 +33,10 @@ func (r *seatRepository) GetStatusSeat(cinema_id int, scheduleTime time.Time) (d
 			c.capacity - c.available AS reserved
 		FROM films f JOIN cinemas c
 		ON f.film_id = c.film_id
-		WHERE c.cinema_id = $1 AND c.time = $2
+		WHERE c.cinema_id = $1 
+		AND c.time BETWEEN ($2::timestamp - INTERVAL '1 hour') AND ($2::timestamp + INTERVAL '1 hour')
+		ORDER BY ABS(EXTRACT(EPOCH FROM (c.time - $2::timestamp))) ASC
+		LIMIT 1
 	`
 
 	var seat dto.SeatResponse
