@@ -10,6 +10,7 @@ type Repository struct {
 	CinemaRepo  CinemaRepository
 	SeatRepo    SeatRepository
 	PaymentRepo PaymentRepository
+	BookingRepo BookingRepository
 	DB          *pgxpool.Pool
 }
 
@@ -19,6 +20,7 @@ func NewRepository(db *pgxpool.Pool, log *zap.Logger) Repository {
 		CinemaRepo:  NewCinemaRepository(db, log),
 		SeatRepo:    NewSeatRepository(db),
 		PaymentRepo: NewPaymentRepository(db),
+		BookingRepo: NewBookingRepository(db),
 		// ProductRepo:   NewProductRepository(db, log),
 		// SaleRepo:      NewSaleRepository(db, log),
 		// ReportRepo:    NewReportRepository(db),

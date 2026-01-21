@@ -10,6 +10,7 @@ type Adaptor struct {
 	CinemaAdaptor  CinemaAdaptor
 	SeatAdaptor    SeatAdaptor
 	PaymentAdaptor PaymentAdaptor
+	BookingAdaptor BookingAdaptor
 }
 
 func NewAdaptor(usecase usecase.Usecase, config utils.Configuration) Adaptor {
@@ -18,5 +19,6 @@ func NewAdaptor(usecase usecase.Usecase, config utils.Configuration) Adaptor {
 		CinemaAdaptor:  NewCinemaAdaptor(usecase.CinemaUsecase, config),
 		SeatAdaptor:    NewSeatAdaptor(usecase.SeatUsecase, config),
 		PaymentAdaptor: NewPaymentAdaptor(usecase.PaymentUsecase, config),
+		BookingAdaptor: NewBookingAdaptor(usecase.BookingUsecase, config),
 	}
 }

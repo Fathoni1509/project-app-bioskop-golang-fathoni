@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"errors"
+	"project-app-bioskop-golang-fathoni/internal/data/entity"
 	"project-app-bioskop-golang-fathoni/internal/data/repository"
 	"project-app-bioskop-golang-fathoni/internal/dto"
 
@@ -9,6 +10,7 @@ import (
 )
 
 type UserUsecase interface {
+	GetUserByToken(token string) (entity.User, error)
 	Register(user *dto.UserRegister) error
 	Login(user *dto.UserLogin) (string, error)
 	Logout(token string) error
@@ -21,6 +23,11 @@ type userUsecase struct {
 func NewUserUsecase(repo repository.Repository) UserUsecase {
 	return &userUsecase{Repo: repo}
 }
+
+// usecase get user by token
+func (uc *userUsecase) GetUserByToken(token string) (entity.User, error) {
+	return uc.Repo.UserRepo.GetUserByToken(token)
+} 
 
 // usecase register user
 func (uc *userUsecase) Register(user *dto.UserRegister) error {

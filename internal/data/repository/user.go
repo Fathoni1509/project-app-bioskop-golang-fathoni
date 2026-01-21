@@ -11,6 +11,7 @@ import (
 
 type UserRepository interface {
 	GetUser(user *dto.UserLogin) (entity.User, error)
+	GetUserByToken(token string) (entity.User, error)
 	Register(user *dto.UserRegister) error
 	Login(user_id int, token string) error
 	Logout(token string) error
@@ -34,6 +35,24 @@ func (r *userRepository) GetUser(user *dto.UserLogin) (entity.User, error) {
 	var data entity.User
 
 	err := r.DB.QueryRow(context.Background(), query, user.Name).Scan(&data.UserId, &data.Name, &data.Password)
+
+	if err != nil {
+		return entity.User{}, err
+	}
+
+	return data, nil
+}
+
+func (r *userRepository) GetUserByToken(token string) (entity.User, error) {
+	query := `
+		SELECT user_id
+		FROM users
+		WHERE token=$1
+	`
+
+	var data entity.User
+
+	err := r.DB.QueryRow(context.Background(), query, token).Scan(&data.UserId)
 
 	if err != nil {
 		return entity.User{}, err

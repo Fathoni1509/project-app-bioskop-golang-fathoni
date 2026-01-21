@@ -7,6 +7,7 @@ type Usecase struct {
 	CinemaUsecase  CinemaUsecase
 	SeatUsecase    SeatUsecase
 	PaymentUsecase PaymentUsecase
+	BookingUsecase BookingUsecase
 }
 
 func NewUsecase(repo repository.Repository) Usecase {
@@ -15,5 +16,6 @@ func NewUsecase(repo repository.Repository) Usecase {
 		CinemaUsecase:  NewCinemaUsecase(repo),
 		SeatUsecase:    NewSeatUsecase(repo),
 		PaymentUsecase: NewPaymentUsecase(repo),
+		BookingUsecase: NewBookingUsecase(repo),
 	}
 }
