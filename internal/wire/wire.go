@@ -71,9 +71,15 @@ func Apiv1(adaptor *adaptor.Adaptor, mw mCostume.MiddlewareCostume) *chi.Mux {
 	r.Get("/payment-methods", adaptor.PaymentAdaptor.GetListPaymentMethods)
 
 	// booking seat
-	r.Route("/bookings", func(r chi.Router) {
+	r.Route("/booking", func(r chi.Router) {
 		r.Use(mw.AuthMiddleware)
 		r.Post("/", adaptor.BookingAdaptor.CreateBooking)
+	})
+
+	// booking history
+	r.Route("/user/bookings", func(r chi.Router) {
+		r.Use(mw.AuthMiddleware)
+		r.Get("/", adaptor.BookingHistoryAdaptor.GetListBookingHistory)
 	})
 
 	return r
