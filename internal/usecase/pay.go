@@ -20,16 +20,22 @@ func NewPayUsecase(repo repository.Repository) PayUsecase {
 
 // usecase create pay
 func (uc *payUsecase) CreatePay(pay *dto.PayRequest) error {
-	booking, err := uc.Repo.HistoryRepo.GetListBookingHistorys(pay.BookingId)
+	booking, err := uc.Repo.PayRepo.GetBookingDetail(pay.BookingId)
 
 	if err != nil {
-		return errors.New("booking_id is invalid or does not exist")
+		return errors.New("booking not found")
 	}
 
-	for _, p := range booking {
-		if pay.TotalPrice != p.Price {
-			return errors.New("price is wrong")
-		}
+	if booking.UserId != pay.UserId {
+		return errors.New("unauthorized: this booking belongs to another user")
+	}
+
+	if booking.Status == true {
+		return errors.New("booking already paid")
+	}
+
+	if float32(booking.TotalPrice) != pay.TotalPrice {
+		return errors.New("total price mismatch: please check your payment amount")
 	}
 
 	err = uc.Repo.PayRepo.CreatePay(pay)

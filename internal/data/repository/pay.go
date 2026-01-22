@@ -9,6 +9,7 @@ import (
 )
 
 type PayRepository interface {
+	GetBookingDetail(booking_id int) (dto.BookingDetail, error)
 	CreatePay(pay *dto.PayRequest) error
 }
 
@@ -20,12 +21,29 @@ func NewPayRepository(db *pgxpool.Pool) PayRepository {
 	return &payRepository{DB: db}
 }
 
-// // get price
-// func (r *payRepository) GetPrice(booking_id int) (dto.HistoryResponse, error) {
-// 	query := `
-// 		SELECT 
-// 	`
-// }
+// get booking detail
+func (r *payRepository) GetBookingDetail(booking_id int) (dto.BookingDetail, error) {
+	query := `
+		SELECT 
+			b.booking_id, 
+			c.price,
+			b.user_id,
+			b.status
+		FROM bookings b JOIN cinemas c
+		ON b.cinema_id = c.cinema_id
+		WHERE booking_id = $1
+	`
+
+	var data dto.BookingDetail
+
+	err := r.DB.QueryRow(context.Background(), query, booking_id).Scan(&data.BookingId, &data.TotalPrice, &data.UserId, &data.Status)
+
+	if err != nil {
+		return dto.BookingDetail{}, err
+	}
+
+	return data, nil
+}
 
 // create pay
 func (r *payRepository) CreatePay(pay *dto.PayRequest) error {

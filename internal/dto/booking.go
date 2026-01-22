@@ -22,6 +22,13 @@ type BookingRequest struct {
 	Status    bool      `json:"status"`
 }
 
+type BookingDetail struct {
+	BookingId  int     `json:"booking_id"`
+	TotalPrice float32 `json:"total_price"`
+	UserId     int     `json:"user_id"`
+	Status     bool    `json:"status"`
+}
+
 // type BookingResponse struct {
 // 	BookingId int       `json:"booking_id"`
 // 	CinemaId  int       `json:"cinema_id"`
