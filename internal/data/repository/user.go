@@ -25,6 +25,7 @@ func NewUserRepository(db *pgxpool.Pool) UserRepository {
 	return &userRepository{DB: db}
 }
 
+// get user to check user is exist
 func (r *userRepository) GetUser(user *dto.UserLogin) (entity.User, error) {
 	query := `
 		SELECT user_id, name, password
@@ -43,6 +44,7 @@ func (r *userRepository) GetUser(user *dto.UserLogin) (entity.User, error) {
 	return data, nil
 }
 
+// get user from token
 func (r *userRepository) GetUserByToken(token string) (entity.User, error) {
 	query := `
 		SELECT user_id
@@ -61,13 +63,14 @@ func (r *userRepository) GetUserByToken(token string) (entity.User, error) {
 	return data, nil
 }
 
+// register user
 func (r *userRepository) Register(user *dto.UserRegister) error {
 	query := `
 		INSERT INTO users (name, email, password, token)
 		VALUES ($1, $2, $3, $4)
 		RETURNING user_id
 	`
-	_, err := r.DB.Exec(context.Background(), query, 
+	_, err := r.DB.Exec(context.Background(), query,
 		user.Name,
 		user.Email,
 		user.Password,
@@ -81,13 +84,14 @@ func (r *userRepository) Register(user *dto.UserRegister) error {
 	return nil
 }
 
+// user login
 func (r *userRepository) Login(user_id int, token string) error {
 	query := `
 		UPDATE users 
 		SET token=$1
 		WHERE user_id=$2
 	`
-	commandTag, err := r.DB.Exec(context.Background(), query, 
+	commandTag, err := r.DB.Exec(context.Background(), query,
 		token,
 		user_id,
 	)
@@ -103,6 +107,7 @@ func (r *userRepository) Login(user_id int, token string) error {
 	return nil
 }
 
+// user logout
 func (r *userRepository) Logout(token string) error {
 	query := `
 		UPDATE users 

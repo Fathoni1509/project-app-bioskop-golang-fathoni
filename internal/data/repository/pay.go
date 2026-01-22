@@ -46,6 +46,7 @@ func (r *payRepository) GetBookingDetail(booking_id int) (dto.BookingDetail, err
 }
 
 // create pay
+// change status from false (not yet paid) to true (paid)
 func (r *payRepository) CreatePay(pay *dto.PayRequest) error {
 	query := `
 		UPDATE bookings

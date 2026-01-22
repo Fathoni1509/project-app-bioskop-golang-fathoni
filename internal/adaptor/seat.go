@@ -33,6 +33,7 @@ func (adaptor *SeatAdaptor) GetStatusSeat(w http.ResponseWriter, r *http.Request
 		return
 	}
 
+	// get data from parameter url
 	queries := r.URL.Query()
 
 	dateParam := queries.Get("date")
@@ -45,6 +46,7 @@ func (adaptor *SeatAdaptor) GetStatusSeat(w http.ResponseWriter, r *http.Request
 
 	scheduleParam := fmt.Sprintf("%s %s", dateParam, timeParam)
 
+	// create layout for schedule
 	layout := "2006-01-02 15:04"
 	loc, _ := time.LoadLocation("Asia/Jakarta")
 
@@ -53,9 +55,6 @@ func (adaptor *SeatAdaptor) GetStatusSeat(w http.ResponseWriter, r *http.Request
 		utils.ResponseBadRequest(w, http.StatusBadRequest, "Invalid date/time format (use YYYY-MM-DD HH:MM)", nil)
 		return
 	}
-
-	// DEBUG (Bisa dihapus nanti)
-    fmt.Printf("Searching CinemaID: %d at Time: %v\n", cinemaID, scheduleTime)
 
 	response, err := adaptor.SeatUsecase.GetStatusSeat(cinemaID, scheduleTime)
 	if err != nil {

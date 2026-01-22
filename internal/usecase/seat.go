@@ -21,4 +21,4 @@ func NewSeatUsecase(repo repository.Repository) SeatUsecase {
 // usecase get status seat
 func (uc *seatUsecase) GetStatusSeat(cinema_id int, scheduleTime time.Time) (dto.SeatResponse, error) {
 	return uc.Repo.SeatRepo.GetStatusSeat(cinema_id, scheduleTime)
-} 
+}

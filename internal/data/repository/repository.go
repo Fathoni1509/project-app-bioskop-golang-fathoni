@@ -25,9 +25,6 @@ func NewRepository(db *pgxpool.Pool, log *zap.Logger) Repository {
 		BookingRepo: NewBookingRepository(db),
 		HistoryRepo: NewBookingHistoryRepository(db),
 		PayRepo:     NewPayRepository(db),
-		// ProductRepo:   NewProductRepository(db, log),
-		// SaleRepo:      NewSaleRepository(db, log),
-		// ReportRepo:    NewReportRepository(db),
 		DB: db,
 	}
 }

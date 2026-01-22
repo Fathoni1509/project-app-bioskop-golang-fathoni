@@ -28,16 +28,16 @@ func (uc *cinemaUsecase) GetListCinemas(page, limit int) (*[]dto.CinemaResponse,
 	}
 
 	pagination := dto.Pagination{
-		CurrentPage: page,
-		Limit: limit,
-		TotalPages: utils.TotalPage(limit, int64(total)),
+		CurrentPage:  page,
+		Limit:        limit,
+		TotalPages:   utils.TotalPage(limit, int64(total)),
 		TotalRecords: total,
 	}
 
 	return &cinemas, &pagination, nil
-} 
+}
 
 // usecase get detail cinema
 func (uc *cinemaUsecase) GetListCinemaById(film_id int) (dto.CinemaDetailResponse, error) {
 	return uc.Repo.CinemaRepo.GetListCinemaById(film_id)
-} 
+}

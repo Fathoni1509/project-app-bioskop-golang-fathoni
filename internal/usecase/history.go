@@ -20,4 +20,4 @@ func NewBookingHistoryUsecase(repo repository.Repository) BookingHistoryUsecase 
 // usecase get all bookingHistory
 func (uc *bookingHistoryUsecase) GetListBookingHistory(user_id int) ([]dto.HistoryResponse, error) {
 	return uc.Repo.HistoryRepo.GetListBookingHistorys(user_id)
-} 
+}

@@ -14,7 +14,7 @@ type CinemaRepository interface {
 }
 
 type cinemaRepository struct {
-	DB *pgxpool.Pool
+	DB     *pgxpool.Pool
 	Logger *zap.Logger
 }
 
@@ -22,6 +22,7 @@ func NewCinemaRepository(db *pgxpool.Pool, log *zap.Logger) CinemaRepository {
 	return &cinemaRepository{DB: db, Logger: log}
 }
 
+// get list all cinemas with pagination
 func (r *cinemaRepository) GetListCinemas(page, limit int) ([]dto.CinemaResponse, int, error) {
 	offset := (page - 1) * limit
 
@@ -70,6 +71,7 @@ func (r *cinemaRepository) GetListCinemas(page, limit int) ([]dto.CinemaResponse
 	return listCinemas, total, nil
 }
 
+// get cinema detail by id
 func (r *cinemaRepository) GetListCinemaById(film_id int) (dto.CinemaDetailResponse, error) {
 	query := `
 		SELECT
@@ -93,7 +95,7 @@ func (r *cinemaRepository) GetListCinemaById(film_id int) (dto.CinemaDetailRespo
 
 	var cinema dto.CinemaDetailResponse
 
-	err := r.DB.QueryRow(context.Background(), query, film_id).Scan(&cinema.CinemaId, &cinema.Name,&cinema.FilmId, &cinema.ImageUrl, &cinema.Film, &cinema.Rating, &cinema.ReviewCount, &cinema.DurationMinute, &cinema.Genre, &cinema.Status, &cinema.Time, &cinema.Language, &cinema.Storyline)
+	err := r.DB.QueryRow(context.Background(), query, film_id).Scan(&cinema.CinemaId, &cinema.Name, &cinema.FilmId, &cinema.ImageUrl, &cinema.Film, &cinema.Rating, &cinema.ReviewCount, &cinema.DurationMinute, &cinema.Genre, &cinema.Status, &cinema.Time, &cinema.Language, &cinema.Storyline)
 
 	if err != nil {
 		return dto.CinemaDetailResponse{}, err

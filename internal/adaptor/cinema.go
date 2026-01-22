@@ -11,13 +11,13 @@ import (
 
 type CinemaAdaptor struct {
 	CinemaUsecase usecase.CinemaUsecase
-	Config utils.Configuration
+	Config        utils.Configuration
 }
 
 func NewCinemaAdaptor(cinemaUsecase usecase.CinemaUsecase, config utils.Configuration) CinemaAdaptor {
 	return CinemaAdaptor{
 		CinemaUsecase: cinemaUsecase,
-		Config: config,
+		Config:        config,
 	}
 }
 

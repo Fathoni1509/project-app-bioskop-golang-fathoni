@@ -19,6 +19,7 @@ func NewPaymentRepository(db *pgxpool.Pool) PaymentRepository {
 	return &paymentRepository{DB: db}
 }
 
+// get list payment method
 func (r *paymentRepository) GetListPaymentMethods() ([]dto.PaymentMethodResponse, error) {
 	query := `
 		SELECT 

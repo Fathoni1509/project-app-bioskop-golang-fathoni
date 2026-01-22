@@ -7,14 +7,14 @@ import (
 	"strings"
 )
 
-// Kunci untuk Context (Biar tidak bentrok dengan library lain)
+// key to contextKey avoid crash with other libraries
 type contextKey string
 const UserIDKey contextKey = "userID"
 
 func (m *MiddlewareCostume) AuthMiddleware(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         
-        // 1. Ambil Token
+        // get token auth
         authHeader := r.Header.Get("Authorization")
         if authHeader == "" {
             utils.ResponseBadRequest(w, http.StatusUnauthorized, "Unauthorized", nil)
@@ -28,8 +28,7 @@ func (m *MiddlewareCostume) AuthMiddleware(next http.Handler) http.Handler {
         token := parts[1]
 
 
-        // 2. Cek Token ke Usecase/Repo & Ambil Data User
-        // Asumsi kamu punya fungsi GetUserByToken di AuthUsecase
+        // check token is valid or invalid
         user, err := m.Usecase.UserUsecase.GetUserByToken(token) 
         if err != nil {
             utils.ResponseBadRequest(w, http.StatusUnauthorized, "Invalid or Expired Token", nil)
@@ -37,11 +36,9 @@ func (m *MiddlewareCostume) AuthMiddleware(next http.Handler) http.Handler {
         }
 
 
-        // 3. MAGIC HAPPENS HERE: Simpan UserID ke Context
-        // Kita "menitipkan" ID user ke dalam request
+        // assign UserID to context
         ctx := context.WithValue(r.Context(), UserIDKey, user.UserId)
 
-        // 4. Lanjut ke Handler dengan Context yang sudah membawa UserID
         next.ServeHTTP(w, r.WithContext(ctx))
     })
 }

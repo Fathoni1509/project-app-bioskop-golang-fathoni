@@ -20,8 +20,4 @@ type CinemaDetailResponse struct {
 	Time      time.Time `json:"time"`
 	Language  string    `json:"language"`
 	Storyline string    `json:"storyline"`
-
-	// Capacity  int       `json:"capacity"`
-	// Available int       `json:"available"`
-	// Price     float32   `json:"price"`
 }

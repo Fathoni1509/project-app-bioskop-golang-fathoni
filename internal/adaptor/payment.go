@@ -8,13 +8,13 @@ import (
 
 type PaymentAdaptor struct {
 	PaymentUsecase usecase.PaymentUsecase
-	Config utils.Configuration
+	Config         utils.Configuration
 }
 
 func NewPaymentAdaptor(paymentUsecase usecase.PaymentUsecase, config utils.Configuration) PaymentAdaptor {
 	return PaymentAdaptor{
 		PaymentUsecase: paymentUsecase,
-		Config: config,
+		Config:         config,
 	}
 }
 

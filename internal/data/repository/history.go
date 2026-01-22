@@ -20,6 +20,7 @@ func NewBookingHistoryRepository(db *pgxpool.Pool) BookingHistoryRepository {
 	return &bookingHistoryRepository{DB: db}
 }
 
+// get all booking histories from an user
 func (r *bookingHistoryRepository) GetListBookingHistorys(user_id int) ([]dto.HistoryResponse, error) {
 	query := `
 		SELECT 
@@ -58,7 +59,7 @@ func (r *bookingHistoryRepository) GetListBookingHistorys(user_id int) ([]dto.Hi
 		}
 
 		list.Date = dateTime.Format("2006-01-02")
-		
+
 		listBookingHistory = append(listBookingHistory, list)
 	}
 

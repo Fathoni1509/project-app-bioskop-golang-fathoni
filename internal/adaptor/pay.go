@@ -11,13 +11,13 @@ import (
 
 type PayAdaptor struct {
 	PayUsecase usecase.PayUsecase
-	Config utils.Configuration
+	Config     utils.Configuration
 }
 
 func NewPayAdaptor(payUsecase usecase.PayUsecase, config utils.Configuration) PayAdaptor {
 	return PayAdaptor{
 		PayUsecase: payUsecase,
-		Config: config,
+		Config:     config,
 	}
 }
 
@@ -38,16 +38,16 @@ func (adaptor *PayAdaptor) CreatePay(w http.ResponseWriter, r *http.Request) {
 
 	userId, ok := r.Context().Value(middleware.UserIDKey).(int)
 	if !ok {
-        utils.ResponseBadRequest(w, http.StatusUnauthorized, "User ID not found in context", nil)
-        return
-    }
+		utils.ResponseBadRequest(w, http.StatusUnauthorized, "User ID not found in context", nil)
+		return
+	}
 
 	// parsing to model pay
 	pay := dto.PayRequest{
-		BookingId: req.BookingId,
+		BookingId:       req.BookingId,
 		PaymentMethodId: req.PaymentMethodId,
-		TotalPrice: req.TotalPrice,
-		UserId: userId,
+		TotalPrice:      req.TotalPrice,
+		UserId:          userId,
 	}
 
 	// create pay

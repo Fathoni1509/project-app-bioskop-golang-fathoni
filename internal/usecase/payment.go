@@ -20,4 +20,4 @@ func NewPaymentUsecase(repo repository.Repository) PaymentUsecase {
 // usecase get all payment methods
 func (uc *paymentUsecase) GetListPaymentMethods() ([]dto.PaymentMethodResponse, error) {
 	return uc.Repo.PaymentRepo.GetListPaymentMethods()
-} 
+}

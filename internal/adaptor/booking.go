@@ -11,13 +11,13 @@ import (
 
 type BookingAdaptor struct {
 	BookingUsecase usecase.BookingUsecase
-	Config utils.Configuration
+	Config         utils.Configuration
 }
 
 func NewBookingAdaptor(bookingUsecase usecase.BookingUsecase, config utils.Configuration) BookingAdaptor {
 	return BookingAdaptor{
 		BookingUsecase: bookingUsecase,
-		Config: config,
+		Config:         config,
 	}
 }
 
@@ -38,16 +38,16 @@ func (adaptor *BookingAdaptor) CreateBooking(w http.ResponseWriter, r *http.Requ
 
 	userId, ok := r.Context().Value(middleware.UserIDKey).(int)
 	if !ok {
-        utils.ResponseBadRequest(w, http.StatusUnauthorized, "User ID not found in context", nil)
-        return
-    }
+		utils.ResponseBadRequest(w, http.StatusUnauthorized, "User ID not found in context", nil)
+		return
+	}
 
 	// parsing to model booking
 	booking := dto.BookingRequest{
-		CinemaId: req.CinemaId,
-		SeatId: req.SeatId,
+		CinemaId:  req.CinemaId,
+		SeatId:    req.SeatId,
 		PaymentId: req.PaymentId,
-		UserId: userId,
+		UserId:    userId,
 	}
 
 	// create product

@@ -9,13 +9,13 @@ import (
 
 type BookingHistoryAdaptor struct {
 	BookingHistoryUsecase usecase.BookingHistoryUsecase
-	Config utils.Configuration
+	Config                utils.Configuration
 }
 
 func NewBookingHistoryAdaptor(bookingHistoryUsecase usecase.BookingHistoryUsecase, config utils.Configuration) BookingHistoryAdaptor {
 	return BookingHistoryAdaptor{
 		BookingHistoryUsecase: bookingHistoryUsecase,
-		Config: config,
+		Config:                config,
 	}
 }
 
@@ -24,9 +24,9 @@ func (adaptor *BookingHistoryAdaptor) GetListBookingHistory(w http.ResponseWrite
 
 	userId, ok := r.Context().Value(middleware.UserIDKey).(int)
 	if !ok {
-        utils.ResponseBadRequest(w, http.StatusUnauthorized, "User ID not found in context", nil)
-        return
-    }
+		utils.ResponseBadRequest(w, http.StatusUnauthorized, "User ID not found in context", nil)
+		return
+	}
 
 	// get data booking history from service all booking history
 	bookingHistory, err := adaptor.BookingHistoryUsecase.GetListBookingHistory(userId)

@@ -25,6 +25,7 @@ func NewSeatRepository(db *pgxpool.Pool) SeatRepository {
 	return &seatRepository{DB: db}
 }
 
+// get status seat, seat capacity, available, and reserved
 func (r *seatRepository) GetStatusSeat(cinema_id int, scheduleTime time.Time) (dto.SeatResponse, error) {
 	query := `
 		SELECT
@@ -52,7 +53,7 @@ func (r *seatRepository) GetStatusSeat(cinema_id int, scheduleTime time.Time) (d
 
 	var seat dto.SeatResponse
 
-	err := r.DB.QueryRow(context.Background(), query, cinema_id, scheduleTime).Scan(&seat.CinemaId, &seat.Name,&seat.FilmId, &seat.Film, &seat.Time, &seat.Capacity, &seat.Available, &seat.Reserved)
+	err := r.DB.QueryRow(context.Background(), query, cinema_id, scheduleTime).Scan(&seat.CinemaId, &seat.Name, &seat.FilmId, &seat.Film, &seat.Time, &seat.Capacity, &seat.Available, &seat.Reserved)
 
 	if err != nil {
 		return dto.SeatResponse{}, err
@@ -61,6 +62,7 @@ func (r *seatRepository) GetStatusSeat(cinema_id int, scheduleTime time.Time) (d
 	return seat, nil
 }
 
+// get seat by cinema_id and seat_id for booking seat
 func (r *seatRepository) GetSeat(seat_id, cinema_id int) (entity.Seat, error) {
 	query := `
 		SELECT
@@ -81,6 +83,8 @@ func (r *seatRepository) GetSeat(seat_id, cinema_id int) (entity.Seat, error) {
 	return seat, nil
 }
 
+// decrease capacity cinema
+// change status seat from false (available) to true (reserved)
 func (r *seatRepository) DecreaseCapacity(tx pgx.Tx, seat_id int) error {
 	query := `UPDATE seats
 	SET status = true
@@ -92,8 +96,8 @@ func (r *seatRepository) DecreaseCapacity(tx pgx.Tx, seat_id int) error {
 	}
 
 	if commandTag.RowsAffected() == 0 {
-        return errors.New("seat not available")
-    }
+		return errors.New("seat not available")
+	}
 
 	return nil
 }

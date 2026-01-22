@@ -13,13 +13,13 @@ import (
 
 type UserAdaptor struct {
 	UserUsecase usecase.UserUsecase
-	Config utils.Configuration
+	Config      utils.Configuration
 }
 
 func NewUserAdaptor(userUsecase usecase.UserUsecase, config utils.Configuration) UserAdaptor {
 	return UserAdaptor{
 		UserUsecase: userUsecase,
-		Config: config,
+		Config:      config,
 	}
 }
 
@@ -42,10 +42,10 @@ func (userAdaptor *UserAdaptor) Register(w http.ResponseWriter, r *http.Request)
 
 	// parsing to model register
 	register := dto.UserRegister{
-		Name: req.Name,
-		Email: req.Email,
+		Name:     req.Name,
+		Email:    req.Email,
 		Password: req.Password,
-		Token: newToken,
+		Token:    newToken,
 	}
 
 	// register user
@@ -56,7 +56,7 @@ func (userAdaptor *UserAdaptor) Register(w http.ResponseWriter, r *http.Request)
 	}
 
 	response := map[string]string{
-		"token":newToken,
+		"token": newToken,
 	}
 
 	utils.ResponseSuccess(w, http.StatusOK, "user register success", response)
@@ -80,7 +80,7 @@ func (userAdaptor *UserAdaptor) Login(w http.ResponseWriter, r *http.Request) {
 
 	// parsing to model login
 	login := dto.UserLogin{
-		Name: req.Name,
+		Name:     req.Name,
 		Password: req.Password,
 	}
 
@@ -99,30 +99,31 @@ func (userAdaptor *UserAdaptor) Login(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// user logout
 func (userAdaptor *UserAdaptor) Logout(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-    authHeader := r.Header.Get("Authorization")
-    if authHeader == "" {
-        http.Error(w, "no token provided", http.StatusBadRequest)
-        return
-    }
+	// get token auth of user
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		http.Error(w, "no token provided", http.StatusBadRequest)
+		return
+	}
 
-    tokenParts := strings.Split(authHeader, " ")
-    if len(tokenParts) != 2 || tokenParts[0] != "Bearer" {
-        http.Error(w, "invalid token format", http.StatusBadRequest)
-        return
-    }
-    token := tokenParts[1]
+	tokenParts := strings.Split(authHeader, " ")
+	if len(tokenParts) != 2 || tokenParts[0] != "Bearer" {
+		http.Error(w, "invalid token format", http.StatusBadRequest)
+		return
+	}
+	token := tokenParts[1]
 
-    err := userAdaptor.UserUsecase.Logout(token)
-    if err != nil {
-        // Error server/db
-        http.Error(w, "failed to logout", http.StatusInternalServerError)
-        return
-    }
+	err := userAdaptor.UserUsecase.Logout(token)
+	if err != nil {
+		http.Error(w, "failed to logout", http.StatusInternalServerError)
+		return
+	}
 
-    json.NewEncoder(w).Encode(map[string]string{
-        "message": "logout success",
-    })
+	json.NewEncoder(w).Encode(map[string]string{
+		"message": "logout success",
+	})
 }

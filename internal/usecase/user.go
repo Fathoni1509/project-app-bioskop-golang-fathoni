@@ -27,12 +27,12 @@ func NewUserUsecase(repo repository.Repository) UserUsecase {
 // usecase get user by token
 func (uc *userUsecase) GetUserByToken(token string) (entity.User, error) {
 	return uc.Repo.UserRepo.GetUserByToken(token)
-} 
+}
 
 // usecase register user
 func (uc *userUsecase) Register(user *dto.UserRegister) error {
 	return uc.Repo.UserRepo.Register(user)
-} 
+}
 
 // usecase login user
 func (uc *userUsecase) Login(user *dto.UserLogin) (string, error) {
@@ -48,16 +48,14 @@ func (uc *userUsecase) Login(user *dto.UserLogin) (string, error) {
 	newToken := uuid.New().String()
 
 	err = uc.Repo.UserRepo.Login(data.UserId, newToken)
-    if err != nil {
-        return "", errors.New("login failed")
-    }
+	if err != nil {
+		return "", errors.New("login failed")
+	}
 
-    return newToken, nil
-
-	// return  uc.Repo.UserRepo.Login(user_id, user)
+	return newToken, nil
 }
 
 // usecase logout user
 func (uc *userUsecase) Logout(token string) error {
-	return  uc.Repo.UserRepo.Logout(token)
+	return uc.Repo.UserRepo.Logout(token)
 }
