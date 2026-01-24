@@ -11,7 +11,6 @@ import (
 )
 
 func InitDB(config utils.DatabaseCofig) (*pgxpool.Pool, error) {
-	// connStr := "user=postgres password=postgres dbname=assignment_with_role sslmode=disable host=192.168.1.12"
 	connStr := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable host=%s",
 		config.Username, config.Password, config.Name, config.Host)
 
